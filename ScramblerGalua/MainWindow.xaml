@@ -1,0 +1,312 @@
+﻿<Window x:Class="ScramblerGalua.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:ScramblerGalua"
+        mc:Ignorable="d"
+        Title="Галуа-64" Height="580" Width="800" PreviewMouseDown="Window_PreviewMouseDown">
+    <Window.Resources>
+        <Style TargetType="Control" x:Key="baseStyle">
+            <Setter Property="FontSize" Value="14pt"/>
+            <Setter Property="FontFamily" Value="Times new Roman"/>
+            <Setter Property="FontStyle" Value="Normal" />
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="Control" x:Key="StyleRadioButton">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FlowDirection" Value="RightToLeft"/>
+        </Style>
+        <Style TargetType="RadioButton"  BasedOn="{StaticResource StyleRadioButton}"></Style>
+        <Style TargetType="Label"  BasedOn="{StaticResource baseStyle}"></Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource baseStyle}"></Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource baseStyle}"></Style>
+        <Style TargetType="ListBox" BasedOn="{StaticResource baseStyle}"></Style>
+        <Style TargetType="Button" BasedOn="{StaticResource baseStyle}"></Style>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource baseStyle}"></Style>
+        <Style TargetType="GroupBox" BasedOn="{StaticResource baseStyle}"></Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="232"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition/>
+            <RowDefinition Height="39"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Вхідний файл"
+                  Grid.ColumnSpan="2"
+                  Margin="5,10,5,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="342*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="TextBoxInputFile"
+                         Style="{StaticResource MaterialDesignTextBox}"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         Padding="0,9,0,0"
+                         TextChanged="TextBoxInputFile_TextChanged" />
+
+                <Button x:Name="ButtonInputFile"
+                        Style="{StaticResource MaterialDesignRaisedButton}"                               
+                        IsEnabled="{Binding IsEnabled,ElementName=ButtonStart}"
+                        Grid.Column="1"   
+                        Margin="5"
+                        Height="Auto"
+                        Content="{materialDesign:PackIcon Kind=File}" 
+                        Click="ButtonInputFile_Click" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Вихідний файл" 
+                  Grid.Row="1" 
+                  Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox x:Name="TextBoxOutputFile"
+                         Style="{StaticResource MaterialDesignTextBox}"
+                         Margin="5" 
+                         Padding="0,0,0,0"
+                         TextChanged="TextBoxInputFile_TextChanged"/>
+                <Button x:Name="ButtonOutputFile"
+                        Style="{StaticResource MaterialDesignRaisedButton}"                                
+                        Grid.Column="1"
+                        Margin="5"
+                        Height="Auto"
+                        IsEnabled="{Binding IsEnabled,ElementName=ButtonStart}"
+                        Content="{materialDesign:PackIcon Kind=ContentSave}" 
+                        Click="ButtonOutputFile_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Операторний ключ" 
+                  Grid.Row="2" 
+                  Grid.ColumnSpan="2" >
+            <Grid
+                Grid.Row="2"
+                Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="229"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="51" />
+                </Grid.RowDefinitions>
+                <GroupBox
+                Header="Матриця"
+                        Grid.RowSpan="3"
+                        Margin="5,5,5,0" 
+                        Height="222" 
+                        VerticalAlignment="Top">
+                    <Grid x:Name="GridMatrix">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Content="G" 
+                            Tag="0"
+                            IsChecked="True"/>
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Content="G*"
+                            Tag="2"/>
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="2"
+                            Grid.Row="1"
+                            Content="F" 
+                            Tag="1"/>
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="2"
+                            Grid.Row="2"
+                            Content="F*"
+                            Tag="3"/>
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Content="Ḡ"
+                            Tag="4"/>
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            Content="Ḡ*"
+                            Tag="6"/>
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="3"
+                            Grid.Row="0"
+                            Content="F̄"
+                            Tag="5"/>
+                        <RadioButton
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Grid.Column="3"
+                            Grid.Row="3"
+                            Content="F̄*"
+                            Tag="7"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Поліном" 
+                     Grid.RowSpan="1"
+                     Grid.Column="1" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="31*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <WrapPanel Grid.ColumnSpan="2">
+                            <Label
+                            Content="Степінь"/>
+
+                            <ComboBox x:Name="ComboBoxPower" Style="{StaticResource MaterialDesignComboBox }"
+                                      Width="70"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      SelectedIndex="0">
+                                <ComboBoxItem Content="32"/>
+                                <ComboBoxItem Content="64"/>
+                                <ComboBoxItem Content="128"/>
+                                <ComboBoxItem Content="256"/>
+                            </ComboBox>
+                            <Label
+                                Content="Формат"/>
+
+                            <ComboBox x:Name="ComboBoxFormat"  
+                                      Style="{StaticResource MaterialDesignComboBox }"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="70"
+                                      SelectedIndex="0"
+                                      DropDownClosed="ComboBoxFormat_DropDownClosed">
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="8"/>
+                                <ComboBoxItem Content="16"/>
+                            </ComboBox>
+                        </WrapPanel>
+                        <TextBox x:Name="TextBoxPolinom"
+                                 Grid.Row="1"
+                                 Grid.ColumnSpan="1" />
+
+                        <Button x:Name="ButtonPolinomGenerate"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                IsEnabled="{Binding IsEnabled,ElementName=ButtonStart}"
+                                Content="Генерувати"
+                                Click="ButtonPolinomGenerate_Click"  />
+                    </Grid>
+                </GroupBox>
+                <GroupBox 
+                Grid.Row="1"
+                Header="Утворюючий елемент" 
+                      Margin="5" Grid.Column="1" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="31*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TextBoxOmega"/>
+                        <Button x:Name="ButtonGeneratOmega"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Grid.Column="1"
+                                IsEnabled="{Binding IsEnabled,ElementName=ButtonStart}"
+                                Content="Генерувати" 
+                                Click="ButtonGeneratOmega_Click" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Header="Вектор ініціалізації" Margin="5,5,5,4.667">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="31*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBox x:Name="TextBoxVector"  />
+                        <Button x:Name="ButtonGenerateVector"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Grid.Column="1"
+                                Content="Генерувати"
+                                IsEnabled="{Binding IsEnabled, ElementName=ButtonStart}"
+                                Click="ButtonGenerateVector_Click"/>
+                    </Grid>
+                </GroupBox>
+                <Button x:Name="ButtonStart"  
+                        Grid.Column="1"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Grid.Row="3"
+                        Margin="0,0,2,6.667" 
+                        Height="30" 
+                        Width="154" 
+                        VerticalAlignment="Bottom" 
+                        HorizontalAlignment="Right" 
+                        Content="Пуск" 
+                        Click="ButtonStart_Click" />
+                <Label x:Name="LabelResult"
+                       Grid.Row="3" 
+                       Grid.Column="1" 
+                       Margin="5,5.333,170,4.667" />
+            </Grid>
+
+
+        </GroupBox>
+
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <ProgressBar x:Name="ProgressBarProgress"
+                         Grid.Column="1"
+                         Margin="5,4" 
+                         Height="Auto"/>
+            <Label x:Name="Label_time"
+                   Grid.Column="0"
+                   Margin="5"
+                   Content="00:00:00:000"/>
+            <Label x:Name="Label_progres"
+                    Grid.Column="1"
+                    Margin="5"
+                    HorizontalContentAlignment="Center"/>
+        </Grid>
+
+    </Grid>
+</Window>
